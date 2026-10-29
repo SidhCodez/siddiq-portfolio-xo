@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { isMaintenanceModeEnabled } from "@/config/maintenance";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -20,27 +21,53 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Siddiq — Developer & Designer",
-  description:
-    "Personal portfolio of Siddiq. Specialized in high-performance frontend engineering, disciplined UI systems, and quiet digital craft.",
-  keywords: [
-    "Siddiq",
-    "Frontend Engineer",
-    "UI/UX Designer",
-    "Next.js Portfolio",
-    "Fraunces",
-    "Inter",
-    "Garnet",
-  ],
-  authors: [{ name: "Siddiq" }],
-};
+export const metadata: Metadata = isMaintenanceModeEnabled()
+  ? {
+      title: "Building what's next — Siddiq",
+      description:
+        "Portfolio temporarily unavailable. I'm currently working behind the scenes on a few improvements to my portfolio.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    }
+  : {
+      title: "Siddiq — Developer & Designer",
+      description:
+        "Personal portfolio of Siddiq. Specialized in high-performance frontend engineering, disciplined UI systems, and quiet digital craft.",
+      keywords: [
+        "Siddiq",
+        "Frontend Engineer",
+        "UI/UX Designer",
+        "Next.js Portfolio",
+        "Fraunces",
+        "Inter",
+        "Garnet",
+      ],
+      authors: [{ name: "Siddiq" }],
+    };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isMaintenance = isMaintenanceModeEnabled();
+
+  if (isMaintenance) {
+    return (
+      <html
+        lang="en"
+        suppressHydrationWarning
+        className={`${fraunces.variable} ${inter.variable}`}
+      >
+        <body className="min-h-screen bg-[#0F0C0D] text-[#F5EDE9] antialiased selection:bg-[#C2434B] selection:text-[#0F0C0D]">
+          {children}
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html
       lang="en"
