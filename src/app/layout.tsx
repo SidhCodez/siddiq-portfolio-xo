@@ -58,10 +58,14 @@ export default function RootLayout({
     return (
       <html
         lang="en"
+        data-theme="dark"
         suppressHydrationWarning
         className={`${fraunces.variable} ${inter.variable}`}
       >
-        <body className="min-h-screen bg-[#0F0C0D] text-[#F5EDE9] antialiased selection:bg-[#C2434B] selection:text-[#0F0C0D]">
+        <body
+          suppressHydrationWarning
+          className="min-h-screen bg-[#0F0C0D] text-[#F5EDE9] antialiased selection:bg-[#C2434B] selection:text-[#0F0C0D]"
+        >
           {children}
         </body>
       </html>
@@ -74,7 +78,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${fraunces.variable} ${inter.variable}`}
     >
-      <body className="min-h-screen bg-bg text-ink antialiased selection:bg-accent selection:text-bg transition-colors duration-300">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-bg text-ink antialiased selection:bg-accent selection:text-bg transition-colors duration-300"
+      >
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="dark"

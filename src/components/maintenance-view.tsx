@@ -211,7 +211,7 @@ export function MaintenanceView() {
         </p>
 
         <p className="font-inter text-xs text-[#B8A8A4]/60">
-          © {new Date().getFullYear()} Siddiq · All rights reserved
+          © <span suppressHydrationWarning>{new Date().getFullYear()}</span> Siddiq · All rights reserved
         </p>
       </footer>
     </div>
