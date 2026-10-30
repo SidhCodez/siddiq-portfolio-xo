@@ -5,7 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ArrowUpRight, List, X } from "@phosphor-icons/react";
+import {
+  ArrowUpRight,
+  List,
+  MagnifyingGlass,
+  X,
+} from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "motion/react";
 
 const NAV_LINKS = [
@@ -16,10 +21,18 @@ const NAV_LINKS = [
   { label: "CONTACT", href: "/#contact" },
 ];
 
+function openCommandPalette() {
+  window.dispatchEvent(new Event("open-command-palette"));
+}
+
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const pathname = usePathname();
+
+  const drawerRef = React.useRef<HTMLDivElement>(null);
+  const menuTriggerRef = React.useRef<HTMLButtonElement>(null);
+  const previouslyFocusedRef = React.useRef<HTMLElement | null>(null);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +42,11 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close the menu whenever the route changes.
+  React.useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   React.useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -37,6 +55,57 @@ export function Navigation() {
     }
     return () => {
       document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  // Focus trap, Escape handling, and focus restoration for the mobile drawer.
+  React.useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    previouslyFocusedRef.current =
+      menuTriggerRef.current ?? (document.activeElement as HTMLElement | null);
+
+    const drawer = drawerRef.current;
+    if (!drawer) return;
+
+    const getFocusable = () =>
+      Array.from(
+        drawer.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+
+    getFocusable()[0]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMobileMenuOpen(false);
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedRef.current?.focus();
     };
   }, [mobileMenuOpen]);
 
@@ -73,10 +142,9 @@ export function Navigation() {
                   <Link
                     key={link.label}
                     href={link.href}
+                    aria-current={isActive ? "page" : undefined}
                     className={`font-inter text-[12px] font-semibold tracking-[0.14em] uppercase transition-colors duration-200 ${
-                      isActive
-                        ? "text-accent"
-                        : "text-muted hover:text-ink"
+                      isActive ? "text-accent" : "text-muted hover:text-ink"
                     }`}
                   >
                     {link.label}
@@ -85,12 +153,27 @@ export function Navigation() {
               })}
             </div>
 
-            {/* Right: Actions (Theme Toggle & Secondary Button Resume) */}
-            <div className="hidden md:flex items-center gap-4">
+            {/* Right: Actions (Search, Theme Toggle & Secondary Button Resume) */}
+            <div className="hidden md:flex items-center gap-3">
+              <button
+                type="button"
+                onClick={openCommandPalette}
+                aria-label="Open global search"
+                className="inline-flex items-center gap-2 h-11 px-3 rounded-[2px] border border-border-surface bg-surface/60 text-muted hover:text-ink hover:border-muted transition-colors"
+              >
+                <MagnifyingGlass size={15} aria-hidden="true" />
+                <span className="font-inter text-[11px] font-semibold tracking-[0.14em] uppercase">
+                  Search
+                </span>
+                <kbd className="rounded-[2px] border border-border-surface bg-bg px-1.5 py-0.5 font-mono text-[10px] leading-none text-muted">
+                  ⌘K
+                </kbd>
+              </button>
+
               <ThemeToggle />
 
               <a
-                href="/resume.pdf"
+                href="/siddiq-resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-secondary text-[11px]"
@@ -102,11 +185,24 @@ export function Navigation() {
 
             {/* Mobile Navigation Trigger */}
             <div className="flex md:hidden items-center gap-3">
-              <ThemeToggle />
               <button
+                type="button"
+                onClick={openCommandPalette}
+                aria-label="Open global search"
+                className="w-11 h-11 rounded-[2px] border border-border-surface bg-surface flex items-center justify-center text-ink"
+              >
+                <MagnifyingGlass size={18} aria-hidden="true" />
+              </button>
+
+              <ThemeToggle />
+
+              <button
+                ref={menuTriggerRef}
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-navigation"
                 className="w-11 h-11 rounded-[2px] border border-border-surface bg-surface flex items-center justify-center text-ink"
               >
                 {mobileMenuOpen ? <X size={20} /> : <List size={20} />}
@@ -120,11 +216,17 @@ export function Navigation() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            ref={drawerRef}
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            tabIndex={-1}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 md:hidden bg-bg pt-28 px-6 pb-10 flex flex-col justify-between"
+            className="fixed inset-0 z-40 md:hidden bg-bg pt-28 px-6 pb-10 flex flex-col justify-between focus:outline-none"
           >
             <div className="space-y-8">
               <div className="font-inter text-[11px] font-bold tracking-eyebrow uppercase text-muted border-b border-border-surface pb-3">
@@ -142,12 +244,24 @@ export function Navigation() {
                     {link.label}
                   </Link>
                 ))}
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openCommandPalette();
+                  }}
+                  className="inline-flex items-center gap-2 font-fraunces text-3xl text-ink hover:text-accent italic transition-colors text-left"
+                >
+                  <MagnifyingGlass size={22} aria-hidden="true" />
+                  <span>SEARCH</span>
+                </button>
               </div>
             </div>
 
             <div className="space-y-4 pt-6 border-t border-border-surface">
               <a
-                href="/resume.pdf"
+                href="/siddiq-resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}

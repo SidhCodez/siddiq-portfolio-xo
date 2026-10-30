@@ -1,3 +1,11 @@
 node_modules
 .next
 improvments/
+
+# Local environment variables / secrets
+.env
+.env.local
+.env.*.local
+
+# TypeScript incremental build info
+*.tsbuildinfo

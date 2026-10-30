@@ -22,14 +22,20 @@ const NAV_DIRECTORY = [
 ];
 
 const SOCIAL_LINKS = [
-  { label: "GITHUB", href: "https://github.com/siddiq", icon: GithubLogo },
-  { label: "LINKEDIN", href: "https://linkedin.com/in/siddiq", icon: LinkedinLogo },
-  { label: "EMAIL", href: "mailto:contact@siddiq.dev", icon: EnvelopeSimple },
+  { label: "GITHUB", href: "https://github.com/SidhCodez", icon: GithubLogo },
+  {
+    label: "LINKEDIN",
+    href: "https://www.linkedin.com/in/siddiq-dev/",
+    icon: LinkedinLogo,
+  },
+  { label: "EMAIL", href: "mailto:siddiq080806@gmail.com", icon: EnvelopeSimple },
 ];
+
+const CONTACT_EMAIL = "siddiq080806@gmail.com";
 
 export function Footer() {
   const [copied, setCopied] = React.useState(false);
-  const email = "contact@siddiq.dev";
+  const email = CONTACT_EMAIL;
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(email);

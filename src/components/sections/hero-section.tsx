@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ArrowDown, ArrowUpRight, Sparkle } from "@phosphor-icons/react";
+import { ArrowDown, ArrowUpRight } from "@phosphor-icons/react";
 import { motion } from "motion/react";
 
 export function HeroSection() {

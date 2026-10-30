@@ -1,17 +1,61 @@
 import * as React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { ALL_PROJECTS } from "@/data/projects";
-import { ArrowLeft, ArrowUpRight, GithubLogo, Sparkle, CheckCircle } from "@phosphor-icons/react/dist/ssr";
+import { JsonLd } from "@/components/structured-data";
+import { AUTHOR, absoluteUrl } from "@/lib/site";
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  GithubLogo,
+  Sparkle,
+  CheckCircle,
+} from "@phosphor-icons/react/dist/ssr";
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return ALL_PROJECTS.map((project) => ({
     slug: project.slug,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = ALL_PROJECTS.find((p) => p.slug === slug);
+
+  if (!project) {
+    return {
+      title: "Project Not Found",
+      description: "The requested case study could not be found.",
+    };
+  }
+
+  return {
+    title: project.title,
+    description: project.description,
+    keywords: project.tags,
+    authors: [{ name: AUTHOR.name, url: AUTHOR.url }],
+    alternates: { canonical: `/projects/${project.slug}` },
+    openGraph: {
+      type: "article",
+      title: `${project.title} — ${project.subtitle}`,
+      description: project.description,
+      url: `/projects/${project.slug}`,
+      tags: project.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.description,
+      images: [`/projects/${project.slug}/opengraph-image`],
+    },
+  };
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
@@ -27,8 +71,33 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const prevProject =
     ALL_PROJECTS[(currentIndex - 1 + ALL_PROJECTS.length) % ALL_PROJECTS.length];
 
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.title,
+    headline: project.subtitle,
+    description: project.description,
+    abstract: project.longDescription,
+    url: absoluteUrl(`/projects/${project.slug}`),
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": absoluteUrl(`/projects/${project.slug}`),
+    },
+    dateCreated: project.year,
+    genre: project.category,
+    keywords: project.tags.join(", "),
+    author: {
+      "@type": "Person",
+      name: AUTHOR.name,
+      url: AUTHOR.url,
+      sameAs: [AUTHOR.github, AUTHOR.linkedin],
+    },
+  };
+
   return (
     <article className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <JsonLd data={projectJsonLd} />
+
       {/* Background Architectural Grid Lines */}
       <div className="absolute inset-0 editorial-grid-lines opacity-25 pointer-events-none" />
 
