@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { CommandPalette } from "@/components/command-palette";
+import { SiteIntro } from "@/components/site-intro";
 import { JsonLd } from "@/components/structured-data";
 import { getAllPostMeta } from "@/lib/blog";
 import {
@@ -188,6 +189,9 @@ export default function RootLayout({
 
           {/* Privacy-friendly Vercel analytics */}
           <Analytics />
+
+          {/* First-load liquid glass brand intro */}
+          <SiteIntro />
         </ThemeProvider>
       </body>
     </html>

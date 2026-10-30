@@ -93,6 +93,45 @@ body {
   mask-image: radial-gradient(125% 105% at 50% 38%, #000 42%, transparent 100%);
 }
 
+/* First-load brand intro */
+.site-intro {
+  opacity: 1;
+  /* Failsafe: if hydration never happens, the overlay removes itself. */
+  animation: intro-failsafe 0.01ms linear 6s forwards;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
+}
+
+.site-intro--leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.site-intro-wordmark {
+  animation: intro-wordmark 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+@keyframes intro-failsafe {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes intro-wordmark {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Design System Buttons */
 .btn-primary {
   background: var(--accent);
