@@ -1,4 +1,4 @@
-// File: /run/media/siddiq/OBV-CODE-DISK/SOURCE-CODES/PORTFOLIO/siddiq-portfolio/src/app/page.tsx
+// File: /run/media/siddiq/Sidh-Files/SOURCE-CODES/PORTFOLIO/siddiq-portfolio/src/app/page.tsx
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
