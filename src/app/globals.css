@@ -87,6 +87,12 @@ body {
                     linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
 }
 
+/* Kinetic hero canvas — fades the grid into the page edges */
+.kinetic-grid-canvas {
+  -webkit-mask-image: radial-gradient(125% 105% at 50% 38%, #000 42%, transparent 100%);
+  mask-image: radial-gradient(125% 105% at 50% 38%, #000 42%, transparent 100%);
+}
+
 /* Design System Buttons */
 .btn-primary {
   background: var(--accent);
