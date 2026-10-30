@@ -136,16 +136,25 @@ export function SiteIntro({
     };
   }, [phase]);
 
-  // Lock scrolling while the overlay covers the page.
+  const initialOverflowRef = React.useRef<string | null>(null);
+
+  // Lock scrolling while the overlay covers the page, restore when done.
   React.useEffect(() => {
-    if (phase === "done") return;
+    if (initialOverflowRef.current === null) {
+      initialOverflowRef.current = document.documentElement.style.overflow;
+    }
 
     const root = document.documentElement;
-    const previous = root.style.overflow;
-    root.style.overflow = "hidden";
+    if (phase !== "done") {
+      root.style.overflow = "hidden";
+    } else {
+      root.style.overflow = initialOverflowRef.current;
+    }
 
     return () => {
-      root.style.overflow = previous;
+      if (initialOverflowRef.current !== null) {
+        root.style.overflow = initialOverflowRef.current;
+      }
     };
   }, [phase]);
 
