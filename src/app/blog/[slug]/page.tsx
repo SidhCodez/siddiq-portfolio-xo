@@ -1,35 +1,103 @@
-import * as React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ALL_BLOGS } from "@/data/blogs";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
+import { ArrowLeft, Clock, Calendar } from "@phosphor-icons/react/dist/ssr";
 import { BlogShareBar } from "@/components/blog-share-bar";
-import { ArrowLeft, Clock, Calendar, Quotes } from "@phosphor-icons/react/dist/ssr";
+import { JsonLd } from "@/components/structured-data";
+import { mdxComponents } from "@/components/mdx/mdx-components";
+import { getAdjacentPosts, getAllPosts, getPostBySlug } from "@/lib/blog";
+import { AUTHOR, SITE_NAME, absoluteUrl } from "@/lib/site";
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return ALL_BLOGS.map((blog) => ({
-    slug: blog.slug,
-  }));
+export function generateStaticParams() {
+  return getAllPosts().map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: BlogPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
+
+  if (!post) {
+    return {
+      title: "Essay Not Found",
+      description: "The requested essay could not be found.",
+    };
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    keywords: post.tags,
+    authors: [{ name: AUTHOR.name, url: AUTHOR.url }],
+    alternates: { canonical: `/blog/${post.slug}` },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt,
+      url: `/blog/${post.slug}`,
+      siteName: SITE_NAME,
+      publishedTime: post.publishedAt,
+      authors: [AUTHOR.name],
+      tags: post.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [`/blog/${post.slug}/opengraph-image`],
+    },
+  };
 }
 
 export default async function BlogPostPage({ params }: BlogPageProps) {
   const { slug } = await params;
-  const post = ALL_BLOGS.find((b) => b.slug === slug);
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  const currentIndex = ALL_BLOGS.findIndex((b) => b.slug === slug);
-  const nextPost = ALL_BLOGS[(currentIndex + 1) % ALL_BLOGS.length];
-  const prevPost =
-    ALL_BLOGS[(currentIndex - 1 + ALL_BLOGS.length) % ALL_BLOGS.length];
+  const { previous, next } = getAdjacentPosts(post.slug);
+
+  const blogPostingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    articleSection: post.category,
+    keywords: post.tags.join(", "),
+    url: absoluteUrl(`/blog/${post.slug}`),
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": absoluteUrl(`/blog/${post.slug}`),
+    },
+    author: {
+      "@type": "Person",
+      name: AUTHOR.name,
+      url: AUTHOR.url,
+      sameAs: [AUTHOR.github, AUTHOR.linkedin],
+    },
+    publisher: {
+      "@type": "Person",
+      name: AUTHOR.name,
+      url: AUTHOR.url,
+    },
+  };
 
   return (
     <article className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <JsonLd data={blogPostingJsonLd} />
+
       {/* Background Architectural Grid Lines */}
       <div className="absolute inset-0 editorial-grid-lines opacity-25 pointer-events-none" />
 
@@ -44,21 +112,19 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             <span>ALL ESSAYS</span>
           </Link>
 
-          <span className="font-mono text-xs text-muted">
-            {post.category}
-          </span>
+          <span className="font-mono text-xs text-muted">{post.category}</span>
         </div>
 
         {/* Article Header */}
         <header className="space-y-6">
           <div className="flex items-center gap-4 text-xs font-mono text-muted">
             <span className="flex items-center gap-1.5">
-              <Calendar size={14} />
-              <span>{post.publishedAt}</span>
+              <Calendar size={14} aria-hidden="true" />
+              <time dateTime={post.publishedAt}>{post.displayDate}</time>
             </span>
-            <span>•</span>
+            <span aria-hidden="true">•</span>
             <span className="flex items-center gap-1.5">
-              <Clock size={14} />
+              <Clock size={14} aria-hidden="true" />
               <span>{post.readTime}</span>
             </span>
           </div>
@@ -76,64 +142,17 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         </header>
 
         {/* Article Body */}
-        <div className="space-y-10 pt-4 border-t border-border-surface">
-          {/* Intro Paragraph */}
-          <p className="font-inter text-base sm:text-lg text-ink/90 leading-relaxed font-normal">
-            {post.content.intro}
-          </p>
-
-          {/* Sections */}
-          {post.content.sections.map((section, idx) => (
-            <section key={idx} className="space-y-6 pt-4">
-              <h2 className="font-fraunces text-2xl sm:text-3xl text-ink font-semibold">
-                {section.heading}
-              </h2>
-
-              <div className="space-y-4">
-                {section.body.map((p, pIdx) => (
-                  <p
-                    key={pIdx}
-                    className="font-inter text-sm sm:text-base text-muted leading-relaxed"
-                  >
-                    {p}
-                  </p>
-                ))}
-              </div>
-
-              {/* Pull Quote */}
-              {section.quote && (
-                <figure className="my-6 p-6 rounded-[2px] border-l-2 border-accent bg-surface space-y-2">
-                  <Quotes size={22} weight="fill" className="text-accent opacity-80" />
-                  <blockquote className="font-fraunces text-xl text-ink italic leading-snug">
-                    "{section.quote}"
-                  </blockquote>
-                </figure>
-              )}
-
-              {/* Code Snippet */}
-              {section.codeSnippet && (
-                <div className="my-6 rounded-[2px] border border-border-surface bg-bg overflow-hidden">
-                  <div className="px-4 py-2 border-b border-border-surface bg-surface flex items-center justify-between text-xs font-mono text-muted">
-                    <span>{section.codeSnippet.language}</span>
-                    <span>ARCHITECTURE</span>
-                  </div>
-                  <pre className="p-4 text-xs font-mono text-ink overflow-x-auto leading-relaxed">
-                    <code>{section.codeSnippet.code}</code>
-                  </pre>
-                </div>
-              )}
-            </section>
-          ))}
-
-          {/* Conclusion */}
-          <div className="pt-8 border-t border-border-surface space-y-4">
-            <h3 className="font-fraunces text-2xl text-ink font-semibold">
-              Endnote & Looking Forward
-            </h3>
-            <p className="font-inter text-base text-muted leading-relaxed">
-              {post.content.conclusion}
-            </p>
-          </div>
+        <div className="pt-4 border-t border-border-surface">
+          <MDXRemote
+            source={post.content}
+            components={mdxComponents}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                rehypePlugins: [rehypeSlug],
+              },
+            }}
+          />
         </div>
 
         {/* Tags */}
@@ -168,31 +187,41 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         </div>
 
         {/* Previous / Next Post Links */}
-        <div className="pt-8 border-t border-border-surface grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <Link
-            href={`/blog/${prevPost.slug}`}
-            className="p-6 rounded-[2px] border border-border-surface bg-surface hover:border-accent transition-colors group space-y-2"
-          >
-            <span className="font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
-              PREVIOUS ESSAY
-            </span>
-            <h4 className="font-fraunces text-lg text-ink font-semibold group-hover:text-accent transition-colors line-clamp-2">
-              {prevPost.title}
-            </h4>
-          </Link>
+        {(previous || next) && (
+          <div className="pt-8 border-t border-border-surface grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {previous ? (
+              <Link
+                href={`/blog/${previous.slug}`}
+                className="p-6 rounded-[2px] border border-border-surface bg-surface hover:border-accent transition-colors group space-y-2"
+              >
+                <span className="font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
+                  PREVIOUS ESSAY
+                </span>
+                <h2 className="font-fraunces text-lg text-ink font-semibold group-hover:text-accent transition-colors line-clamp-2">
+                  {previous.title}
+                </h2>
+              </Link>
+            ) : (
+              <div />
+            )}
 
-          <Link
-            href={`/blog/${nextPost.slug}`}
-            className="p-6 rounded-[2px] border border-border-surface bg-surface hover:border-accent transition-colors group space-y-2 text-right"
-          >
-            <span className="font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
-              NEXT ESSAY
-            </span>
-            <h4 className="font-fraunces text-lg text-ink font-semibold group-hover:text-accent transition-colors line-clamp-2">
-              {nextPost.title}
-            </h4>
-          </Link>
-        </div>
+            {next ? (
+              <Link
+                href={`/blog/${next.slug}`}
+                className="p-6 rounded-[2px] border border-border-surface bg-surface hover:border-accent transition-colors group space-y-2 text-right"
+              >
+                <span className="font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
+                  NEXT ESSAY
+                </span>
+                <h2 className="font-fraunces text-lg text-ink font-semibold group-hover:text-accent transition-colors line-clamp-2">
+                  {next.title}
+                </h2>
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
+        )}
       </div>
     </article>
   );

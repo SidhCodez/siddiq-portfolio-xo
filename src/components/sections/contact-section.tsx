@@ -15,14 +15,27 @@ export function ContactSection() {
     name: "",
     email: "",
     message: "",
+    website: "",
   });
 
   const [status, setStatus] = React.useState<"idle" | "submitting" | "success" | "error">(
     "idle"
   );
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [copied, setCopied] = React.useState(false);
 
-  const directEmail = "contact@siddiq.dev";
+  const directEmail = "siddiq080806@gmail.com";
+
+  const updateField = (
+    field: "name" | "email" | "message" | "website",
+    value: string
+  ) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+    if (status === "success" || status === "error") {
+      setStatus("idle");
+      setErrorMessage("");
+    }
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(directEmail);
@@ -30,18 +43,46 @@ export function ContactSection() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setErrorMessage("Please ensure all fields are filled before submitting.");
       setStatus("error");
       return;
     }
 
     setStatus("submitting");
-    setTimeout(() => {
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = (await response.json().catch(() => null)) as
+        | { ok?: boolean; error?: string }
+        | null;
+
+      if (!response.ok || !result?.ok) {
+        setErrorMessage(
+          result?.error ??
+            "The inquiry could not be sent. Please try again or email me directly."
+        );
+        setStatus("error");
+        return;
+      }
+
       setStatus("success");
-      setFormData({ name: "", email: "", message: "" });
-    }, 700);
+      setFormData({ name: "", email: "", message: "", website: "" });
+    } catch {
+      setErrorMessage(
+        "A network error occurred. Please check your connection and try again."
+      );
+      setStatus("error");
+    }
   };
 
   return (
@@ -117,7 +158,26 @@ export function ContactSection() {
 
               {/* Right Column: Contact Form */}
               <div className="lg:col-span-7 p-8 sm:p-12">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="relative space-y-6">
+                  {/* Honeypot: hidden from humans and assistive tech, catches bots */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+                  >
+                    <label htmlFor="contact-website">Website</label>
+                    <input
+                      id="contact-website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.website}
+                      onChange={(e) =>
+                        updateField("website", e.target.value)
+                      }
+                    />
+                  </div>
+
                   {/* Name Input */}
                   <div className="space-y-2">
                     <label
@@ -131,7 +191,7 @@ export function ContactSection() {
                       type="text"
                       required
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) => updateField("name", e.target.value)}
                       placeholder="e.g. Eleanor Vance"
                       className="w-full min-h-[44px] px-4 py-3 rounded-[2px] border border-border-surface bg-bg text-ink placeholder:text-muted/60 font-inter text-sm transition-all focus:outline-none focus:border-accent"
                     />
@@ -150,7 +210,7 @@ export function ContactSection() {
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) => updateField("email", e.target.value)}
                       placeholder="e.g. eleanor@vance-holdings.com"
                       className="w-full min-h-[44px] px-4 py-3 rounded-[2px] border border-border-surface bg-bg text-ink placeholder:text-muted/60 font-inter text-sm transition-all focus:outline-none focus:border-accent"
                     />
@@ -169,7 +229,7 @@ export function ContactSection() {
                       rows={4}
                       required
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) => updateField("message", e.target.value)}
                       placeholder="Describe your timeline, scope, or position specifications..."
                       className="w-full px-4 py-3 rounded-[2px] border border-border-surface bg-bg text-ink placeholder:text-muted/60 font-inter text-sm transition-all focus:outline-none focus:border-accent resize-none"
                     />
@@ -186,7 +246,10 @@ export function ContactSection() {
                   {status === "error" && (
                     <div className="p-4 rounded-[2px] bg-surface border border-red-500/40 text-red-400 flex items-center gap-3 font-inter text-xs">
                       <WarningCircle size={18} weight="fill" />
-                      <span>Please ensure all fields are filled before submitting.</span>
+                      <span>
+                        {errorMessage ||
+                          "Please ensure all fields are filled before submitting."}
+                      </span>
                     </div>
                   )}
 

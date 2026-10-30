@@ -15,7 +15,7 @@ export function BlogShareBar({ postTitle, postSlug }: BlogShareBarProps) {
     if (typeof window !== "undefined") {
       return `${window.location.origin}/blog/${postSlug}`;
     }
-    return `https://siddiq.dev/blog/${postSlug}`;
+    return `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://siddiq-portfolio-beta.vercel.app"}/blog/${postSlug}`;
   };
 
   const handleCopyLink = () => {
@@ -31,7 +31,7 @@ export function BlogShareBar({ postTitle, postSlug }: BlogShareBarProps) {
           title: postTitle,
           url: getUrl(),
         });
-      } catch (err) {
+      } catch {
         // Fallback or user canceled
       }
     } else {
