@@ -481,16 +481,18 @@ export default function KineticGrid({
       sizeRef.current = { w, h, dpr };
       dotPatternRef.current = null;
 
-      // Repaint immediately when no animation loop is running.
-      if (reducedMotion) draw(performance.now());
+      // Resizing the backing store clears the canvas, and the loop only paints
+      // when the scene changes, so repaint here or the grid stays blank until
+      // the pointer moves.
+      draw(performance.now());
     };
 
     const refreshPalette = () => {
       paletteRef.current = readPalette(canvas, globalColor === "monochrome");
     };
 
-    resize();
     refreshPalette();
+    resize();
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
