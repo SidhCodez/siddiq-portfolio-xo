@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { ShareNetwork, Check, Copy, XLogo, LinkedinLogo } from "@phosphor-icons/react";
+import { SITE_URL } from "@/lib/site";
 
 interface BlogShareBarProps {
   postTitle: string;
@@ -15,7 +16,7 @@ export function BlogShareBar({ postTitle, postSlug }: BlogShareBarProps) {
     if (typeof window !== "undefined") {
       return `${window.location.origin}/blog/${postSlug}`;
     }
-    return `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://siddiq-portfolio-beta.vercel.app"}/blog/${postSlug}`;
+    return `${SITE_URL}/blog/${postSlug}`;
   };
 
   const handleCopyLink = () => {

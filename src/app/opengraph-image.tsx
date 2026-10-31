@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { SITE_URL } from "@/lib/site";
 
 export const alt = "Siddiq — Frontend Engineer & UI Architect";
 export const size = { width: 1200, height: 630 };
@@ -82,7 +83,7 @@ export default function OpengraphImage() {
             color: "#6F6266",
           }}
         >
-          <div>siddiq-portfolio-beta.vercel.app</div>
+          <div>{new URL(SITE_URL).host}</div>
           <div>DEVELOPER &amp; DESIGNER</div>
         </div>
       </div>
