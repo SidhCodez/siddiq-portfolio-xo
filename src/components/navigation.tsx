@@ -129,7 +129,7 @@ export function Navigation() {
             </div>
 
             {/* Center: Desktop Navigation Links */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-8">
               {NAV_LINKS.map((link) => {
                 const isActive =
                   link.href === "/"
@@ -154,7 +154,7 @@ export function Navigation() {
             </div>
 
             {/* Right: Actions (Search, Theme Toggle & Secondary Button Resume) */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3">
               <button
                 type="button"
                 onClick={openCommandPalette}
@@ -184,7 +184,7 @@ export function Navigation() {
             </div>
 
             {/* Mobile Navigation Trigger */}
-            <div className="flex md:hidden items-center gap-3">
+            <div className="flex lg:hidden items-center gap-3">
               <button
                 type="button"
                 onClick={openCommandPalette}
@@ -226,7 +226,7 @@ export function Navigation() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 md:hidden bg-bg pt-28 px-6 pb-10 flex flex-col justify-between focus:outline-none"
+            className="fixed inset-0 z-40 lg:hidden bg-bg pt-28 px-6 pb-10 flex flex-col justify-between focus:outline-none"
           >
             <div className="space-y-8">
               <div className="font-inter text-[11px] font-bold tracking-eyebrow uppercase text-muted border-b border-border-surface pb-3">
