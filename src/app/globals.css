@@ -105,6 +105,33 @@ body {
   mask-composite: intersect;
 }
 
+/* Mobile photo strip — slow marquee with soft edges */
+.photo-strip {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.photo-strip-track {
+  animation: photo-strip-scroll var(--strip-duration, 38s) linear infinite;
+  will-change: transform;
+}
+
+@keyframes photo-strip-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* Half the track is an exact duplicate of the first set. */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-strip-track {
+    animation: none;
+  }
+}
+
 /* First-load brand intro */
 .site-intro {
   opacity: 1;

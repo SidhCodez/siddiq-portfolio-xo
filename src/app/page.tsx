@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { HeroSection } from "@/components/sections/hero-section";
+import { PhotoStrip } from "@/components/ui/photo-strip";
 import { AboutSection } from "@/components/sections/about-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { SkillsSection } from "@/components/sections/skills-section";
@@ -32,6 +33,9 @@ export default function Home() {
     <div className="relative flex flex-col w-full overflow-hidden">
       {/* 01: Hero Section */}
       <HeroSection />
+
+      {/* Small screens get the photography as a strip instead of the orbital ring */}
+      <PhotoStrip className="lg:hidden" />
 
       {/* 02: About & Philosophy Section */}
       <AboutSection />
