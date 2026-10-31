@@ -4,14 +4,20 @@ import * as React from "react";
 import { ArrowDown, ArrowUpRight } from "@phosphor-icons/react";
 import { motion } from "motion/react";
 import KineticGrid from "@/components/ui/kinetic-grid";
+import { OrbitalGallery } from "@/components/ui/orbital-gallery";
 
 export function HeroSection() {
   return (
     <section id="hero" className="relative isolate overflow-hidden">
       {/* Interactive architectural grid — warps toward the pointer, ripples on click */}
       <KineticGrid className="min-h-[calc(100dvh-5rem)]">
-        <div className="flex min-h-[calc(100dvh-5rem)] flex-col justify-center px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-          <div className="relative mx-auto w-full max-w-[1360px]">
+        <div className="relative flex min-h-[calc(100dvh-5rem)] flex-col justify-center px-4 py-12 sm:px-6 md:py-16 lg:px-8">
+          {/* Slow orbital gallery riding above the grid, under the copy. Hidden
+              below lg, where the copy spans the full width and photos would
+              cross it. */}
+          <OrbitalGallery className="hidden lg:block" />
+
+          <div className="relative z-10 mx-auto w-full max-w-[1360px]">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
               {/* Left Column: Headline, Copy, Action Buttons */}
               <div className="lg:col-span-7 space-y-8">
@@ -34,7 +40,7 @@ export function HeroSection() {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   className="space-y-1"
                 >
-                  <h1 className="font-fraunces font-medium italic text-5xl sm:text-6xl md:text-7xl lg:text-[88px] text-ink leading-[1.08] tracking-display pb-2">
+                  <h1 className="font-fraunces font-medium italic text-5xl sm:text-6xl md:text-7xl lg:text-[88px] text-ink leading-[1.08] tracking-display pb-2 [text-shadow:0_2px_30px_rgba(15,12,13,0.72)]">
                     Quiet luxury, <br />
                     <span className="text-accent not-italic font-normal">crafted code.</span>
                   </h1>
@@ -45,7 +51,7 @@ export function HeroSection() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="font-inter text-base sm:text-lg text-muted max-w-[48ch] leading-relaxed"
+                  className="font-inter text-base sm:text-lg text-muted max-w-[48ch] leading-relaxed [text-shadow:0_1px_20px_rgba(15,12,13,0.85)]"
                 >
                   Frontend engineer designing deliberate digital systems where architectural restraint meets modern engineering speed.
                 </motion.p>
