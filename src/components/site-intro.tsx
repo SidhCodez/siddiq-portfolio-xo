@@ -170,36 +170,65 @@ export function SiteIntro({
       )}
       style={{ backgroundColor: palette.background }}
     >
-      <GlassIconReveal
-        logo={MARK_SVG}
-        label="Siddiq"
-        onReady={() => setReady(true)}
-        look={palette.look}
-        background={palette.background}
-        logoColor={palette.accent}
-        tileSize={420}
-        logoScale={0.36}
-        finalScale={1}
-        loop={false}
-        hold={0}
-        tuning={{
-          present: 0.85,
-          glide: 1.25,
-          response: 0.5,
-          startSize: 0.24,
-          startZoom: 1.6,
-          bounce: 0,
-          focus: 0.8,
-          sheen: 1,
-          lightTurn: 0.7,
-        }}
-        className="pointer-events-none"
-        style={{
-          width: "clamp(230px, 46vw, 400px)",
-          height: "clamp(230px, 46vw, 400px)",
-          backgroundColor: "transparent",
-        }}
-      />
+      <div className="relative">
+        {/* Holds the mark while the WebGL chunk loads, so the reveal never
+            opens on an empty screen. Fades under the first glass frame. */}
+        <span
+          aria-hidden="true"
+          data-site-intro-mark={ready ? "hidden" : "waiting"}
+          className={cn(
+            "site-intro-mark pointer-events-none absolute inset-0 grid place-items-center transition-opacity duration-500",
+            ready ? "opacity-0" : "opacity-100",
+          )}
+          style={{ color: palette.accent }}
+        >
+          <svg
+            viewBox="0 0 32 32"
+            fill="none"
+            className="h-12 w-12"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M 16 4 L 28 16 L 16 28 L 4 16 Z"
+              stroke="currentColor"
+              strokeWidth={1.8}
+              strokeLinejoin="round"
+            />
+            <circle cx="16" cy="16" r="3" fill="currentColor" />
+          </svg>
+        </span>
+
+        <GlassIconReveal
+          logo={MARK_SVG}
+          label="Siddiq"
+          onReady={() => setReady(true)}
+          look={palette.look}
+          background={palette.background}
+          logoColor={palette.accent}
+          tileSize={420}
+          logoScale={0.36}
+          finalScale={1}
+          loop={false}
+          hold={0}
+          tuning={{
+            present: 0.85,
+            glide: 1.25,
+            response: 0.5,
+            startSize: 0.24,
+            startZoom: 1.6,
+            bounce: 0,
+            focus: 0.8,
+            sheen: 1,
+            lightTurn: 0.7,
+          }}
+          className="pointer-events-none"
+          style={{
+            width: "clamp(230px, 46vw, 400px)",
+            height: "clamp(230px, 46vw, 400px)",
+            backgroundColor: "transparent",
+          }}
+        />
+      </div>
 
       <div className="site-intro-wordmark font-inter text-[11px] font-bold uppercase tracking-eyebrow text-muted">
         Siddiq · Edition 01

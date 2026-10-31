@@ -69,6 +69,15 @@ describe("SiteIntro", () => {
     );
   });
 
+  it("shows a stand-in mark until the reveal scene is ready", () => {
+    render(<SiteIntro playMs={5000} exitMs={20} />);
+
+    expect(screen.getByTestId("glass-reveal")).toBeInTheDocument();
+    expect(
+      document.querySelector('[data-site-intro-mark="waiting"]'),
+    ).not.toBeNull();
+  });
+
   it("is presented as decorative to assistive technology", () => {
     render(<SiteIntro playMs={5000} exitMs={20} />);
 

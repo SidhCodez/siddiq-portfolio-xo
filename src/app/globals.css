@@ -111,6 +111,33 @@ body {
   animation: intro-wordmark 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
 }
 
+/* Stand-in mark shown while the WebGL reveal chunk loads */
+.site-intro-mark svg {
+  animation: intro-mark-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-intro-wordmark {
+    animation: none;
+  }
+
+  .site-intro-mark svg {
+    animation: none;
+    opacity: 0.75;
+  }
+}
+
+@keyframes intro-mark-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
 @keyframes intro-failsafe {
   from {
     opacity: 1;
