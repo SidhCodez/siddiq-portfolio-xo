@@ -7,6 +7,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { CommandPalette } from "@/components/command-palette";
 import { SiteIntro } from "@/components/site-intro";
+import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
 import { JsonLd } from "@/components/structured-data";
 import { getAllPostMeta } from "@/lib/blog";
 import {
@@ -102,14 +103,35 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  applicationName: SITE_NAME,
+  appleWebApp: {
+    capable: true,
+    title: "Siddiq",
+    statusBarStyle: "black-translucent",
+  },
   icons: {
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
     shortcut: "/icon.svg",
+    apple: [
+      {
+        url: "/icons/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
   },
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
+  },
+  other: {
+    // iOS still relies on the Apple-prefixed flag for standalone launches.
+    "apple-mobile-web-app-capable": "yes",
   },
 };
 
@@ -209,6 +231,9 @@ export default function RootLayout({
 
           {/* Privacy-friendly Vercel analytics */}
           <Analytics />
+
+          {/* Offline caching + installable PWA registration */}
+          <ServiceWorkerRegister />
 
           {/* First-load liquid glass brand intro */}
           <SiteIntro />

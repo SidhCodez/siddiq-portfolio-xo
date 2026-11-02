@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
+import { InstallPrompt } from "@/components/pwa/install-prompt";
 import {
   ArrowUp,
   ArrowUpRight,
@@ -170,10 +171,12 @@ export function Footer() {
             <BrandLogo showWordmark={true} />
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
             <span className="font-inter text-xs text-muted">
               EDITION 01 · © {new Date().getFullYear()} ALL RIGHTS RESERVED
             </span>
+
+            <InstallPrompt />
 
             <button
               type="button"

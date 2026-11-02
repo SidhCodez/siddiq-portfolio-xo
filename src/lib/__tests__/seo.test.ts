@@ -25,5 +25,6 @@ describe("SEO route generated data", () => {
       ? result.rules[0]
       : result.rules;
     expect(primaryRule?.disallow).toContain("/api/");
+    expect(primaryRule?.disallow).toContain("/offline");
   });
 });
