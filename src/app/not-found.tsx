@@ -30,7 +30,7 @@ export default function NotFound() {
             </h1>
             <p className="font-inter text-sm sm:text-base text-muted leading-relaxed max-w-[48ch]">
               The URL may be mistyped, or the page may have been moved. The work,
-              essays, and contact channels are still exactly where you left them.
+              talks, resources, and contact channels are still exactly where you left them.
             </p>
           </div>
 

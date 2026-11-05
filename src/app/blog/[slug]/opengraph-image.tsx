@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { getPostBySlug } from "@/lib/blog";
 
 export const runtime = "nodejs";
-export const alt = "Essay cover — Siddiq";
+export const alt = "Talk/Resource cover — Siddiq";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -18,7 +18,7 @@ export default async function OpengraphImage({ params }: ImageProps) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
-  const title = truncate(post?.title ?? "Essay", 96);
+  const title = truncate(post?.title ?? "Talk/Resources", 96);
   const subtitle = truncate(post?.subtitle ?? "", 150);
   const category = post?.category ?? "ESSAYS";
   const meta = post ? `${post.displayDate} · ${post.readTime}` : "";

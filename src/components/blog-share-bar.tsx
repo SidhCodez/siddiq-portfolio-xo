@@ -85,7 +85,7 @@ export function BlogShareBar({ postTitle, postSlug }: BlogShareBarProps) {
         href={twitterShareUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Share this essay on X"
+        aria-label="Share this resource on X"
         className="p-2 rounded-[2px] border border-border-surface bg-surface text-muted hover:text-ink hover:border-accent transition-colors"
       >
         <XLogo size={14} />
@@ -96,7 +96,7 @@ export function BlogShareBar({ postTitle, postSlug }: BlogShareBarProps) {
         href={linkedInShareUrl}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Share this essay on LinkedIn"
+        aria-label="Share this resource on LinkedIn"
         className="p-2 rounded-[2px] border border-border-surface bg-surface text-muted hover:text-ink hover:border-accent transition-colors"
       >
         <LinkedinLogo size={14} />

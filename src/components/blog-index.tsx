@@ -85,10 +85,10 @@ export function BlogIndex({ posts, categories }: BlogIndexProps) {
         <ScrollReveal yOffset={16}>
           <div className="space-y-4 max-w-3xl">
             <div className="font-inter text-[11px] font-bold uppercase tracking-eyebrow text-accent">
-              ESSAYS & MONOGRAPHS · {posts.length} PUBLICATIONS
+              TALK/RESOURCES · {posts.length} PUBLICATIONS
             </div>
             <h1 className="font-fraunces text-4xl sm:text-5xl md:text-6xl text-ink font-semibold leading-[1.08]">
-              Essays on software, <br />
+              Talks & resources on software, <br />
               <span className="italic text-accent">design, and speed.</span>
             </h1>
             <p className="font-inter text-base sm:text-lg text-muted max-w-[54ch] leading-relaxed">
@@ -124,7 +124,7 @@ export function BlogIndex({ posts, categories }: BlogIndexProps) {
 
             <div className="relative w-full md:w-64">
               <label htmlFor="blog-search" className="sr-only">
-                Search essays
+                Search talks & resources
               </label>
               <MagnifyingGlass
                 size={16}
@@ -136,7 +136,7 @@ export function BlogIndex({ posts, categories }: BlogIndexProps) {
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search essays..."
+                placeholder="Search talks & resources..."
                 className="w-full pl-9 pr-4 py-2 rounded-[2px] border border-border-surface bg-bg text-ink placeholder:text-muted/60 font-inter text-xs transition-colors focus:outline-none focus:border-accent"
               />
             </div>
@@ -237,7 +237,7 @@ export function BlogIndex({ posts, categories }: BlogIndexProps) {
         {filteredBlogs.length === 0 && (
           <div className="p-12 text-center rounded-[3px] border border-border-surface bg-surface space-y-3">
             <h2 className="font-fraunces text-2xl text-ink font-semibold">
-              No essays match your query
+              No talks or resources match your query
             </h2>
             <p className="font-inter text-sm text-muted">
               Try adjusting your category filter or clearing the search bar.

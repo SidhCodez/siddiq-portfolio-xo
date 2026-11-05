@@ -40,7 +40,7 @@ interface CommandPaletteProps {
 const NAV_ITEMS = [
   { label: "Home", href: "/", icon: House, keywords: "overview landing index" },
   { label: "All Projects", href: "/projects", icon: Briefcase, keywords: "work archive portfolio" },
-  { label: "All Essays", href: "/blog", icon: BookOpen, keywords: "writing blog monographs" },
+  { label: "Talk/Resources", href: "/blog", icon: BookOpen, keywords: "writing talk resources blog monographs" },
   { label: "About", href: "/#about", icon: User, keywords: "bio philosophy ethos" },
   { label: "Skills", href: "/#skills", icon: Stack, keywords: "capabilities stack technologies" },
   { label: "Experience", href: "/#experience", icon: Briefcase, keywords: "career timeline roles" },
@@ -103,7 +103,7 @@ export function CommandPalette({ posts }: CommandPaletteProps) {
       <div className="flex items-center gap-3 px-4 border-b border-border-surface">
         <MagnifyingGlass size={18} className="text-muted shrink-0" aria-hidden="true" />
         <Command.Input
-          placeholder="Search pages, projects, essays, actions…"
+          placeholder="Search pages, projects, resources, actions…"
           className="flex-1 bg-transparent py-4 font-inter text-sm text-ink outline-none placeholder:text-muted/60"
         />
         <kbd className="hidden sm:inline-flex shrink-0 items-center rounded-[2px] border border-border-surface bg-bg px-1.5 py-0.5 font-mono text-[10px] text-muted">
@@ -113,7 +113,7 @@ export function CommandPalette({ posts }: CommandPaletteProps) {
 
       <Command.List className="max-h-[min(62vh,440px)] overflow-y-auto p-2">
         <Command.Empty className="py-12 text-center font-inter text-xs text-muted">
-          No results found. Try a project name, essay title, or skill.
+          No results found. Try a project name, resource title, or skill.
         </Command.Empty>
 
         <Command.Group heading="Navigate">
@@ -157,7 +157,7 @@ export function CommandPalette({ posts }: CommandPaletteProps) {
           ))}
         </Command.Group>
 
-        <Command.Group heading="Essays">
+        <Command.Group heading="Talk/Resources">
           {posts.map((post) => (
             <Command.Item
               key={post.slug}

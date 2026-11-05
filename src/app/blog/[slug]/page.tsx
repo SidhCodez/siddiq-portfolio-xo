@@ -27,8 +27,8 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Essay Not Found",
-      description: "The requested essay could not be found.",
+      title: "Resource Not Found",
+      description: "The requested resource could not be found.",
     };
   }
 

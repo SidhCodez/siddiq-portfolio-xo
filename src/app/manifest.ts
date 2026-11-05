@@ -44,9 +44,9 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
       {
-        name: "Essays & Blog",
-        short_name: "Essays",
-        description: "Notes on frontend craft, design systems, and performance.",
+        name: "Talk/Resources",
+        short_name: "Resources",
+        description: "Talks, notes, and resources on frontend craft, design systems, and performance.",
         url: "/blog",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },

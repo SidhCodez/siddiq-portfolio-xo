@@ -16,7 +16,7 @@ import {
 
 const NAV_DIRECTORY = [
   { label: "ALL PROJECTS", href: "/projects" },
-  { label: "ESSAYS & BLOG", href: "/blog" },
+  { label: "TALK/RESOURCES", href: "/blog" },
   { label: "ABOUT SIDDIQ", href: "/#about" },
   { label: "CAPABILITIES", href: "/#skills" },
   { label: "CAREER TIMELINE", href: "/#experience" },
