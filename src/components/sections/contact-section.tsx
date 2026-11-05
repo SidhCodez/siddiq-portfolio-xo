@@ -92,7 +92,7 @@ export function ContactSection() {
         <ScrollReveal yOffset={16}>
           <div className="space-y-4 max-w-3xl">
             <div className="font-inter text-[11px] font-bold uppercase tracking-eyebrow text-accent">
-              05 — INITIATE CONTACT
+              06 — INITIATE CONTACT
             </div>
             <h2 className="font-fraunces text-3xl sm:text-4xl text-ink font-semibold">
               Start a conversation.

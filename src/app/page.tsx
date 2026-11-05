@@ -5,6 +5,7 @@ import { AboutSection } from "@/components/sections/about-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { SkillsSection } from "@/components/sections/skills-section";
 import { ExperienceSection } from "@/components/sections/experience-section";
+import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { ContactSection } from "@/components/sections/contact-section";
 
 export const metadata: Metadata = {
@@ -49,7 +50,10 @@ export default function Home() {
       {/* 05: Experience Timeline */}
       <ExperienceSection />
 
-      {/* 06: Contact & Inquiries */}
+      {/* 06: Testimonials */}
+      <TestimonialsSection />
+
+      {/* 07: Contact & Inquiries */}
       <ContactSection />
     </div>
   );
