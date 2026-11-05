@@ -294,7 +294,8 @@ export function StaggerTestimonials() {
     <div className="relative w-full overflow-hidden" style={{ height: 600 }}>
       <div className="absolute inset-0 editorial-grid-lines opacity-20 pointer-events-none" />
 
-      {items.map((testimonial, index) => {
+      {TESTIMONIALS.map((testimonial) => {
+        const index = items.findIndex((item) => item.id === testimonial.id);
         const position =
           items.length % 2
             ? index - (items.length + 1) / 2
