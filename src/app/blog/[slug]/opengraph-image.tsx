@@ -20,7 +20,7 @@ export default async function OpengraphImage({ params }: ImageProps) {
 
   const title = truncate(post?.title ?? "Talk/Resources", 96);
   const subtitle = truncate(post?.subtitle ?? "", 150);
-  const category = post?.category ?? "ESSAYS";
+  const category = post?.category ?? "RESOURCES";
   const meta = post ? `${post.displayDate} · ${post.readTime}` : "";
 
   return new ImageResponse(
@@ -76,7 +76,7 @@ export default async function OpengraphImage({ params }: ImageProps) {
               color: "#6F6266",
             }}
           >
-            ESSAY · SIDDIQ
+            RESOURCE · SIDDIQ
           </div>
         </div>
 

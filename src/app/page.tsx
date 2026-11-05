@@ -5,8 +5,10 @@ import { AboutSection } from "@/components/sections/about-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { SkillsSection } from "@/components/sections/skills-section";
 import { ExperienceSection } from "@/components/sections/experience-section";
+import { TalkResourcesSection } from "@/components/sections/talk-resources-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { ContactSection } from "@/components/sections/contact-section";
+import { getAllPostMeta } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: { absolute: "Siddiq — Frontend Engineer & UI Architect" },
@@ -30,6 +32,8 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+  const posts = getAllPostMeta();
+
   return (
     <div className="relative flex flex-col w-full overflow-hidden">
       {/* 01: Hero Section */}
@@ -50,10 +54,13 @@ export default function Home() {
       {/* 05: Experience Timeline */}
       <ExperienceSection />
 
-      {/* 06: Testimonials */}
+      {/* 06: Talk/Resources */}
+      <TalkResourcesSection posts={posts} />
+
+      {/* 07: Testimonials */}
       <TestimonialsSection />
 
-      {/* 07: Contact & Inquiries */}
+      {/* 08: Contact & Inquiries */}
       <ContactSection />
     </div>
   );

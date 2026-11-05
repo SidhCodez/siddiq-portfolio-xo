@@ -224,7 +224,7 @@ export function BlogIndex({ posts, categories }: BlogIndexProps) {
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center gap-1.5 font-inter text-[11px] font-bold uppercase tracking-button text-accent hover:underline"
                   >
-                    <span>READ ESSAY</span>
+                    <span>READ RESOURCE</span>
                     <ArrowUpRight size={13} weight="bold" />
                   </Link>
                 </div>

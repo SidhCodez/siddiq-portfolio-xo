@@ -47,7 +47,7 @@ export default function NotFound() {
               href="/blog"
               className="font-inter text-[11px] font-bold uppercase tracking-button text-muted hover:text-ink transition-colors px-2 py-2"
             >
-              READ ESSAYS
+              READ RESOURCES
             </Link>
           </div>
         </div>

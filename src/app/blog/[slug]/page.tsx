@@ -109,7 +109,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             className="inline-flex items-center gap-2 font-inter text-xs font-semibold tracking-wider text-muted hover:text-ink transition-colors"
           >
             <ArrowLeft size={14} weight="bold" />
-            <span>ALL ESSAYS</span>
+            <span>ALL RESOURCES</span>
           </Link>
 
           <span className="font-mono text-xs text-muted">{post.category}</span>
@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 className="p-6 rounded-[2px] border border-border-surface bg-surface hover:border-accent transition-colors group space-y-2"
               >
                 <span className="font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
-                  PREVIOUS ESSAY
+                  PREVIOUS RESOURCE
                 </span>
                 <h2 className="font-fraunces text-lg text-ink font-semibold group-hover:text-accent transition-colors line-clamp-2">
                   {previous.title}
@@ -211,7 +211,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 className="p-6 rounded-[2px] border border-border-surface bg-surface hover:border-accent transition-colors group space-y-2 text-right"
               >
                 <span className="font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
-                  NEXT ESSAY
+                  NEXT RESOURCE
                 </span>
                 <h2 className="font-fraunces text-lg text-ink font-semibold group-hover:text-accent transition-colors line-clamp-2">
                   {next.title}

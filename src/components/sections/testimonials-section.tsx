@@ -13,7 +13,7 @@ export function TestimonialsSection() {
         <ScrollReveal yOffset={16}>
           <div className="space-y-4 max-w-2xl">
             <div className="font-inter text-[11px] font-bold uppercase tracking-eyebrow text-accent">
-              05 — TESTIMONIALS
+              07 — TESTIMONIALS
             </div>
             <h2 className="font-fraunces text-3xl sm:text-4xl text-ink font-semibold">
               Kind words.
