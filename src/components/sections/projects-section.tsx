@@ -2,27 +2,31 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ALL_PROJECTS } from "@/data/projects";
+import { ALL_PROJECTS, FEATURED_PROJECTS } from "@/data/projects";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import {
   ArrowUpRight,
   GithubLogo,
   Sparkle,
-  ShieldCheck,
+  SealCheck,
   MagnifyingGlass,
+  FileText,
+  TelegramLogo,
   BookBookmark,
+  Anchor,
 } from "@phosphor-icons/react";
 
 const PROJECT_ICONS: Record<string, React.ElementType> = {
-  "skill-bridge": Sparkle,
-  walletguard: ShieldCheck,
+  skillbridge: SealCheck,
   coldcase: MagnifyingGlass,
-  virasethu: BookBookmark,
+  resumind: FileText,
+  "brain-dev": TelegramLogo,
+  "alchemy-docs": BookBookmark,
+  keel: Anchor,
 };
 
 export function ProjectsSection() {
-  const featuredProject = ALL_PROJECTS[0];
-  const gridProjects = ALL_PROJECTS.slice(1, 4);
+  const [featuredProject, ...gridProjects] = FEATURED_PROJECTS;
   const FeaturedIcon = PROJECT_ICONS[featuredProject.slug] || Sparkle;
 
   return (
@@ -39,8 +43,8 @@ export function ProjectsSection() {
                 Proven engineering.
               </h2>
               <p className="font-inter text-sm sm:text-base text-muted leading-relaxed">
-                A curated selection of software engineering projects, high-assurance security
-                interfaces, and disciplined design systems built for scale.
+                Verified skill platforms, AI forensics pipelines, offline-first products, and
+                docs-as-code systems — each one documented like a case study.
               </p>
             </div>
 
@@ -120,15 +124,17 @@ export function ProjectsSection() {
                       Case Study
                     </Link>
 
-                    <a
-                      href={featuredProject.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-primary text-[11px]"
-                    >
-                      <span>LIVE DEMO</span>
-                      <ArrowUpRight size={13} weight="bold" />
-                    </a>
+                    {featuredProject.liveUrl ? (
+                      <a
+                        href={featuredProject.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary text-[11px]"
+                      >
+                        <span>LIVE DEMO</span>
+                        <ArrowUpRight size={13} weight="bold" />
+                      </a>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -137,8 +143,8 @@ export function ProjectsSection() {
               <div className="lg:col-span-5 relative min-h-[300px] lg:min-h-full bg-bg border-t lg:border-t-0 lg:border-l border-border-surface flex items-center justify-center p-8">
                 <div className="w-full h-full min-h-[220px] rounded-[2px] border border-border-surface bg-surface/50 p-6 flex flex-col justify-between space-y-6">
                   <div className="flex items-center justify-between text-muted font-mono text-xs">
-                    <span>SKILL_GRAPH_ENGINE v2.4</span>
-                    <span className="text-accent font-bold">ONLINE</span>
+                    <span>SKILL_VERIFICATION_ENGINE v1.0</span>
+                    <span className="text-accent font-bold">MENTOR-GATED</span>
                   </div>
 
                   <div className="space-y-3">
@@ -154,8 +160,8 @@ export function ProjectsSection() {
                   </div>
 
                   <div className="font-inter text-[10px] font-bold tracking-eyebrow uppercase text-muted flex justify-between">
-                    <span>LATENCY: 18MS</span>
-                    <span>GRAPH NODES: 1,420</span>
+                    <span>SUBMIT → VERIFY → BADGE</span>
+                    <span>3 ROLE DASHBOARDS</span>
                   </div>
                 </div>
               </div>

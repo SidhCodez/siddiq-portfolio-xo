@@ -37,8 +37,8 @@ describe("CommandPalette", () => {
     const input = await screen.findByPlaceholderText(/search pages/i);
     expect(input).toBeInTheDocument();
 
-    await user.type(input, "wallet");
-    expect(await screen.findByText("WalletGuard")).toBeInTheDocument();
+    await user.type(input, "cold");
+    expect(await screen.findByText("ColdCase")).toBeInTheDocument();
   });
 
   it("opens when the navbar dispatches the custom event", async () => {

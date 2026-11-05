@@ -20,6 +20,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // The case-study slugs changed when the real projects replaced placeholders.
+      {
+        source: "/projects/skill-bridge",
+        destination: "/projects/skillbridge",
+        permanent: true,
+      },
+      { source: "/projects/walletguard", destination: "/projects", permanent: true },
+      { source: "/projects/virasethu", destination: "/projects", permanent: true },
+      { source: "/projects/prism-tokens", destination: "/projects", permanent: true },
+      { source: "/projects/chronoflow", destination: "/projects", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

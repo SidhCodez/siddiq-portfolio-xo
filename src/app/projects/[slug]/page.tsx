@@ -2,7 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ALL_PROJECTS } from "@/data/projects";
+import { ALL_PROJECTS, PROJECTS_BY_ORDER } from "@/data/projects";
 import { JsonLd } from "@/components/structured-data";
 import { AUTHOR, absoluteUrl } from "@/lib/site";
 import {
@@ -27,7 +27,7 @@ export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = ALL_PROJECTS.find((p) => p.slug === slug);
+  const project = PROJECTS_BY_ORDER.find((p) => p.slug === slug);
 
   if (!project) {
     return {
@@ -60,16 +60,19 @@ export async function generateMetadata({
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const project = ALL_PROJECTS.find((p) => p.slug === slug);
+  const project = PROJECTS_BY_ORDER.find((p) => p.slug === slug);
 
   if (!project) {
     notFound();
   }
 
-  const currentIndex = ALL_PROJECTS.findIndex((p) => p.slug === slug);
-  const nextProject = ALL_PROJECTS[(currentIndex + 1) % ALL_PROJECTS.length];
+  const currentIndex = PROJECTS_BY_ORDER.findIndex((p) => p.slug === slug);
+  const nextProject =
+    PROJECTS_BY_ORDER[(currentIndex + 1) % PROJECTS_BY_ORDER.length];
   const prevProject =
-    ALL_PROJECTS[(currentIndex - 1 + ALL_PROJECTS.length) % ALL_PROJECTS.length];
+    PROJECTS_BY_ORDER[
+      (currentIndex - 1 + PROJECTS_BY_ORDER.length) % PROJECTS_BY_ORDER.length
+    ];
 
   const projectJsonLd = {
     "@context": "https://schema.org",
@@ -134,21 +137,23 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center gap-4 pt-4">
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary"
-            >
-              <span>EXPERIENCE LIVE SYSTEM</span>
-              <ArrowUpRight size={14} weight="bold" />
-            </a>
+            {project.liveUrl ? (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                <span>EXPERIENCE LIVE SYSTEM</span>
+                <ArrowUpRight size={14} weight="bold" />
+              </a>
+            ) : null}
 
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary"
+              className={project.liveUrl ? "btn-secondary" : "btn-primary"}
             >
               <GithubLogo size={16} />
               <span>INSPECT REPOSITORY</span>

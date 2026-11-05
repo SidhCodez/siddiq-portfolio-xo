@@ -10,7 +10,7 @@ describe("SEO route generated data", () => {
     expect(urls).toContain(SITE_URL);
     expect(urls).toContain(`${SITE_URL}/projects`);
     expect(urls).toContain(`${SITE_URL}/blog`);
-    expect(urls).toContain(`${SITE_URL}/projects/skill-bridge`);
+    expect(urls).toContain(`${SITE_URL}/projects/skillbridge`);
     expect(urls).toContain(
       `${SITE_URL}/blog/the-architecture-of-quiet-luxury`
     );

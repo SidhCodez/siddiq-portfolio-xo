@@ -40,7 +40,7 @@ export default function Home() {
       {/* 02: About & Philosophy Section */}
       <AboutSection />
 
-      {/* 03: Projects Portfolio (SkillBridge, WalletGuard, ColdCase, Virasethu) */}
+      {/* 03: Projects Portfolio (SkillBridge, ColdCase, ResumeMind, Brain Dot) */}
       <ProjectsSection />
 
       {/* 04: Skills & Architecture Matrix */}

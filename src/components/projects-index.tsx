@@ -2,23 +2,20 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ALL_PROJECTS } from "@/data/projects";
+import { ALL_PROJECTS, PROJECTS_BY_ORDER } from "@/data/projects";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ArrowUpRight, GithubLogo, ArrowLeft, MagnifyingGlass, Sparkle } from "@phosphor-icons/react";
 
 const CATEGORIES = [
   "ALL",
-  "AI & SYSTEMS",
-  "SECURITY & WEB3",
-  "DATA & ARCHIVES",
-  "UI ARCHITECTURE",
-] as const;
+  ...Array.from(new Set(PROJECTS_BY_ORDER.map((project) => project.category))),
+];
 
 export function ProjectsIndex() {
   const [selectedCategory, setSelectedCategory] = React.useState<string>("ALL");
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const filteredProjects = ALL_PROJECTS.filter((project) => {
+  const filteredProjects = PROJECTS_BY_ORDER.filter((project) => {
     const matchesCategory =
       selectedCategory === "ALL" || project.category === selectedCategory;
     const matchesSearch =
@@ -49,15 +46,15 @@ export function ProjectsIndex() {
         <ScrollReveal yOffset={16}>
           <div className="space-y-4 max-w-4xl">
             <div className="font-inter text-[11px] font-bold uppercase tracking-eyebrow text-accent">
-              PORTFOLIO ARCHIVE · {ALL_PROJECTS.length} SELECTED COMMISSIONS
+              PORTFOLIO ARCHIVE · {ALL_PROJECTS.length} CASE STUDIES
             </div>
             <h1 className="font-fraunces text-4xl sm:text-5xl md:text-6xl text-ink font-semibold leading-[1.08]">
               Comprehensive works & <br />
               <span className="italic text-accent">architectural systems.</span>
             </h1>
             <p className="font-inter text-base sm:text-lg text-muted max-w-[58ch] leading-relaxed">
-              An index of software engineering projects, high-assurance security tools,
-              and design token systems developed between 2023 and 2026.
+              Verified skill platforms, AI forensics pipelines, offline-first products,
+              and docs-as-code systems — each one documented like a case study.
             </p>
           </div>
         </ScrollReveal>
@@ -176,15 +173,17 @@ export function ProjectsIndex() {
                         Case Study
                       </Link>
 
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-primary text-[10px] min-h-[36px] px-3.5"
-                      >
-                        <span>Demo</span>
-                        <ArrowUpRight size={12} weight="bold" />
-                      </a>
+                      {project.liveUrl ? (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-primary text-[10px] min-h-[36px] px-3.5"
+                        >
+                          <span>Demo</span>
+                          <ArrowUpRight size={12} weight="bold" />
+                        </a>
+                      ) : null}
                     </div>
                   </div>
                 </div>
