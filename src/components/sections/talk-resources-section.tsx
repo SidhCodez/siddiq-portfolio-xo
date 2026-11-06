@@ -4,12 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import type { BlogPostMeta } from "@/lib/blog";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import {
-  ArrowUpRight,
-  BookOpen,
-  CalendarBlank,
-  Clock,
-} from "@phosphor-icons/react";
+import { ArrowUpRight, BookOpen, Clock } from "@phosphor-icons/react";
 
 interface TalkResourcesSectionProps {
   posts: BlogPostMeta[];
@@ -18,7 +13,8 @@ interface TalkResourcesSectionProps {
 export function TalkResourcesSection({ posts }: TalkResourcesSectionProps) {
   if (posts.length === 0) return null;
 
-  const [featured, ...rest] = posts.slice(0, 4);
+  const categories = Array.from(new Set(posts.map((post) => post.category)));
+  const latest = posts[0];
   const total = String(posts.length).padStart(2, "0");
 
   return (
@@ -26,159 +22,107 @@ export function TalkResourcesSection({ posts }: TalkResourcesSectionProps) {
       id="resources"
       className="relative py-24 md:py-36 px-4 sm:px-6 lg:px-8 border-t border-border-surface"
     >
-      <div className="max-w-[1360px] mx-auto space-y-16">
-        {/* Section Header */}
-        <ScrollReveal yOffset={16}>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-4 max-w-2xl">
-              <div className="font-inter text-[11px] font-bold uppercase tracking-eyebrow text-accent">
-                06 — TALK/RESOURCES
-              </div>
-              <h2 className="font-fraunces text-3xl sm:text-4xl text-ink font-semibold">
-                Ideas worth keeping.
-              </h2>
-              <p className="font-inter text-sm sm:text-base text-muted leading-relaxed">
-                Talks, notes, and reference material on frontend architecture,
-                design systems, and the craft of building for the web.
-              </p>
-            </div>
-
-            <Link
-              href="/blog"
-              className="btn-secondary self-start md:self-auto text-[11px]"
+      <div className="max-w-[1360px] mx-auto">
+        <ScrollReveal yOffset={20} duration={0.7}>
+          <div className="relative overflow-hidden rounded-[3px] border border-border-surface bg-surface">
+            {/* Architectural background */}
+            <div className="absolute inset-0 editorial-grid-lines opacity-20 pointer-events-none" />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-10 top-1/2 hidden -translate-y-1/2 select-none font-fraunces text-[260px] leading-none text-accent/[0.05] lg:block"
             >
-              <span>BROWSE ALL {total} RESOURCES</span>
-              <ArrowUpRight size={13} weight="bold" />
-            </Link>
-          </div>
-        </ScrollReveal>
+              /
+            </span>
 
-        {/* Featured resource + index list */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Featured resource */}
-          <ScrollReveal
-            className="lg:col-span-7"
-            delay={0.1}
-            yOffset={24}
-            duration={0.7}
-          >
-            <article className="group relative flex h-full min-h-[420px] flex-col justify-between overflow-hidden rounded-[3px] border border-border-surface bg-surface p-8 sm:p-10 hover:border-accent transition-colors">
-              {/* Architectural ordinal watermark */}
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-4 -top-10 select-none font-fraunces text-[170px] leading-none text-accent/[0.06]"
-              >
-                01
-              </span>
-
-              <div className="relative space-y-6">
-                <div className="flex items-center justify-between border-b border-border-surface pb-4">
-                  <span className="flex items-center gap-2 font-inter text-[10px] font-bold uppercase tracking-eyebrow text-accent">
-                    <BookOpen size={14} weight="fill" />
-                    <span>Featured · {featured.category}</span>
+            <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center p-8 sm:p-12 lg:p-16">
+              {/* CTA copy */}
+              <div className="lg:col-span-7 space-y-7">
+                <div className="flex items-center gap-3">
+                  <span className="font-inter text-[11px] font-bold uppercase tracking-eyebrow text-accent">
+                    06 — TALK/RESOURCES
                   </span>
-                  <span className="font-mono text-[10px] text-muted">01 / {total}</span>
+                  <span className="h-px flex-1 bg-border-surface" />
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-fraunces text-3xl sm:text-4xl md:text-[44px] text-ink font-semibold leading-[1.1]">
-                    <Link
-                      href={`/blog/${featured.slug}`}
-                      className="hover:text-accent transition-colors"
-                    >
-                      {featured.title}
-                    </Link>
-                  </h3>
+                  <h2 className="font-fraunces text-3xl sm:text-4xl md:text-5xl text-ink font-semibold leading-[1.08]">
+                    The thinking behind <br />
+                    <span className="italic text-accent">the work.</span>
+                  </h2>
                   <p className="font-inter text-sm sm:text-base text-muted leading-relaxed max-w-[52ch]">
-                    {featured.subtitle}
-                  </p>
-                  <p className="font-inter text-xs sm:text-sm text-ink/80 leading-relaxed line-clamp-3 max-w-[58ch]">
-                    {featured.excerpt}
+                    Talks, working notes, and reference material on frontend
+                    architecture, design systems, and the craft of building for
+                    the web. Written down so the reasoning outlives the project.
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {featured.tags.slice(0, 4).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 rounded-[2px] text-[11px] font-mono bg-bg text-muted border border-border-surface"
-                    >
-                      #{tag}
+                <div className="flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-[11px] uppercase tracking-wider text-muted">
+                  <span className="flex items-center gap-2">
+                    <BookOpen size={14} className="text-accent" aria-hidden="true" />
+                    {total} resources
+                  </span>
+                  <span>{categories.length} categories</span>
+                  <span className="flex items-center gap-2">
+                    <Clock size={14} className="text-accent" aria-hidden="true" />
+                    Latest · {latest.readTime}
+                  </span>
+                </div>
+
+                <div className="pt-2">
+                  <Link href="/blog" className="btn-primary">
+                    <span>EXPLORE TALK/RESOURCES</span>
+                    <ArrowUpRight size={14} weight="bold" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Archive index — decorative, not a set of links */}
+              <div className="lg:col-span-5">
+                <div className="rounded-[2px] border border-border-surface bg-bg/50 p-6 sm:p-7 space-y-5">
+                  <div className="flex items-center justify-between border-b border-border-surface pb-4">
+                    <span className="font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
+                      In the archive
                     </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="relative mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border-surface pt-5">
-                <div className="flex flex-wrap items-center gap-4 font-mono text-[10px] uppercase tracking-wider text-muted">
-                  <span className="flex items-center gap-1.5">
-                    <CalendarBlank size={12} aria-hidden="true" />
-                    {featured.displayDate}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock size={12} aria-hidden="true" />
-                    {featured.readTime}
-                  </span>
-                </div>
-
-                <Link
-                  href={`/blog/${featured.slug}`}
-                  className="inline-flex items-center gap-1.5 font-inter text-[11px] font-bold uppercase tracking-button text-accent hover:underline"
-                >
-                  <span>Read resource</span>
-                  <ArrowUpRight size={13} weight="bold" />
-                </Link>
-              </div>
-            </article>
-          </ScrollReveal>
-
-          {/* Compact index of the remaining resources */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            {rest.map((post, idx) => (
-              <ScrollReveal
-                key={post.slug}
-                className="flex-1"
-                delay={0.16 + idx * 0.07}
-                yOffset={18}
-              >
-                <article className="group flex h-full items-start gap-5 rounded-[3px] border border-border-surface bg-surface p-6 hover:border-accent hover:bg-bg/40 transition-colors">
-                  <span className="font-fraunces text-2xl font-medium text-accent/60 tabular-nums">
-                    {String(idx + 2).padStart(2, "0")}
-                  </span>
-
-                  <div className="min-w-0 flex-1 space-y-2">
-                    <div className="flex items-center justify-between gap-3 font-inter text-[10px] font-bold uppercase tracking-eyebrow text-muted">
-                      <span className="truncate text-accent">{post.category}</span>
-                      <span className="shrink-0 font-mono font-normal tracking-wider">
-                        {post.readTime}
-                      </span>
-                    </div>
-
-                    <h3 className="font-fraunces text-xl text-ink font-semibold leading-snug">
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="group-hover:text-accent transition-colors"
-                      >
-                        {post.title}
-                      </Link>
-                    </h3>
-
-                    <p className="font-inter text-xs text-muted leading-relaxed line-clamp-2">
-                      {post.excerpt}
-                    </p>
+                    <span className="font-mono text-[10px] text-muted">
+                      {total} entries
+                    </span>
                   </div>
 
-                  <ArrowUpRight
-                    size={16}
-                    weight="bold"
-                    aria-hidden="true"
-                    className="mt-1 shrink-0 text-muted transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
-                  />
-                </article>
-              </ScrollReveal>
-            ))}
+                  <ul className="space-y-4">
+                    {categories.map((category, idx) => {
+                      const count = posts.filter(
+                        (post) => post.category === category
+                      ).length;
+
+                      return (
+                        <li
+                          key={category}
+                          className="flex items-center justify-between gap-4"
+                        >
+                          <span className="flex items-center gap-4">
+                            <span className="font-mono text-[10px] text-accent">
+                              {String(idx + 1).padStart(2, "0")}
+                            </span>
+                            <span className="font-inter text-sm text-ink">
+                              {category}
+                            </span>
+                          </span>
+                          <span className="font-mono text-[10px] text-muted">
+                            {String(count).padStart(2, "0")}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  <p className="border-t border-border-surface pt-4 font-inter text-xs italic text-muted">
+                    Latest: {latest.title}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
