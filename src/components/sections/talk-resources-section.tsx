@@ -41,38 +41,15 @@ export function TalkResourcesSection({ posts }: TalkResourcesSectionProps) {
                 Talks, notes, and reference material on frontend architecture,
                 design systems, and the craft of building for the web.
               </p>
-
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1 font-mono text-[10px] uppercase tracking-wider text-muted">
-                {(["TALKS", "RESOURCES"] as const).map((category) => (
-                  <span key={category} className="flex items-center gap-2">
-                    <span className="h-1 w-1 rounded-full bg-accent/70" />
-                    {category}
-                    <span className="text-accent">
-                      {String(
-                        posts.filter((post) => post.category === category).length
-                      ).padStart(2, "0")}
-                    </span>
-                  </span>
-                ))}
-              </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 self-start md:self-auto">
-              <Link
-                href="/links"
-                className="btn-primary text-[11px]"
-              >
-                <span>LINK CATALOGUE</span>
-                <ArrowUpRight size={13} weight="bold" />
-              </Link>
-              <Link
-                href="/blog"
-                className="btn-secondary text-[11px]"
-              >
-                <span>BROWSE ALL {total}</span>
-                <ArrowUpRight size={13} weight="bold" />
-              </Link>
-            </div>
+            <Link
+              href="/blog"
+              className="btn-secondary self-start md:self-auto text-[11px]"
+            >
+              <span>BROWSE ALL {total} RESOURCES</span>
+              <ArrowUpRight size={13} weight="bold" />
+            </Link>
           </div>
         </ScrollReveal>
 

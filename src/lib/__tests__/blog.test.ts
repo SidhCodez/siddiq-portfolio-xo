@@ -40,7 +40,7 @@ describe("blog content layer", () => {
   });
 
   it("derives categories and wraps adjacent posts", () => {
-    expect(getBlogCategories().sort()).toEqual(["RESOURCES", "TALKS"]);
+    expect(getBlogCategories()).toContain("DESIGN SYSTEMS");
 
     const { previous, next } = getAdjacentPosts(
       "the-architecture-of-quiet-luxury"

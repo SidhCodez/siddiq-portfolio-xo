@@ -15,7 +15,7 @@ const frontmatterSchema = z.object({
       (value) => !Number.isNaN(Date.parse(`${value}T00:00:00Z`)),
       "publishedAt must be a real date"
     ),
-  category: z.enum(["TALKS", "RESOURCES"]),
+  category: z.string().min(1, "category is required"),
   excerpt: z.string().min(1, "excerpt is required"),
   tags: z.array(z.string()).default([]),
 });
